@@ -1,55 +1,27 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 import ButtonComponent from "../atoms/ButtonComponent";
 import FormikField from "../molecules/FormikField";
 import LinkComponent from "../atoms/LinkComponent";
+import FormComponent from "../atoms/FormComponent";
 
-const initialValues = {
-  email: "",
-  password: ""
-};
-
-const LoginSchema = Yup.object().shape({
-  email: Yup.string("Enter your email")
-    .email("Enter a valid email")
-    .required("Email is required")
-    .max(35, "Email must contain no more then 35 characters")
-    .matches(
-      /^[A-Za-z].*$/,
-      "Email should not start with number or special char"
-    ),
-  password: Yup.string("Enter a Password")
-    .min(8, "Password must contain at least 8 characters")
-    .max(20, "Password must contain no more then 20 characters")
-    .required("Enter your password")
-    .matches(
-      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20}/,
-      "Password must contain at least one uppercase,number,special char"
-    )
-    .matches(/^[A-Z]/, "Password must start with upper case")
-});
-
-const Login = () => {
-  const handleSubmit = values => {
-    alert(JSON.stringify(values));
-  };
-
-  const LoginWithGoogleOrFacebook = () => {
-    console.log("login with Google or Facebook");
-  };
-
+const Login = ({
+  handleSubmit,
+  LoginWithGoogleOrFacebook,
+  initialValues,
+  validationSchema
+}) => {
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={LoginSchema}
+      validationSchema={validationSchema}
     >
-      {({ dirty, isValid, resetForm }) => {
+      {({ dirty, errors, isValid, resetForm }) => {
         return (
-          <Form>
+          <FormComponent>
             <FormikField name="email" label="Email" required />
             <FormikField
               name="password"
@@ -92,7 +64,7 @@ const Login = () => {
             >
               Login with Google/Facebook
             </ButtonComponent>
-          </Form>
+          </FormComponent>
         );
       }}
     </Formik>
