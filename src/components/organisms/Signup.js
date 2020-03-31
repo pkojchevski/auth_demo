@@ -20,22 +20,39 @@ const Signup = ({
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({ dirty, isValid, resetForm }) => {
+      {({ dirty, touched, isValid, resetForm, errors }) => {
         return (
           <Form>
-            <FormikField name="name" label="Name" required />
-            <FormikField name="email" label="Email" required />
-            <FormikField name="confirmEmail" label="Confirm email" required />
+            <FormikField
+              name="name"
+              label="Name"
+              required
+              error={touched.name && Boolean(errors.name)}
+            />
+            <FormikField
+              name="email"
+              label="Email"
+              required
+              error={touched.email && Boolean(errors.email)}
+            />
+            <FormikField
+              name="confirmEmail"
+              label="Confirm email"
+              required
+              error={touched.confirmEmail && Boolean(errors.confirmEmail)}
+            />
             <FormikField
               name="password"
               type="password"
               label="Password"
+              error={touched.password && Boolean(errors.password)}
               required
             />
             <FormikField
               name="confirmPassword"
               type="password"
               label="Confirm Password"
+              error={touched.confirmPassword && Boolean(errors.confirmPassword)}
               required
             />
             <br />

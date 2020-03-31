@@ -19,14 +19,20 @@ const Login = ({
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({ dirty, errors, isValid, resetForm }) => {
+      {({ dirty, touched, isValid, resetForm, errors }) => {
         return (
           <FormComponent>
-            <FormikField name="email" label="Email" required />
+            <FormikField
+              name="email"
+              label="Email"
+              required
+              error={touched.email && Boolean(errors.email)}
+            />
             <FormikField
               name="password"
               type="password"
               label="Password"
+              error={touched.password && Boolean(errors.password)}
               required
             />
             <br />
