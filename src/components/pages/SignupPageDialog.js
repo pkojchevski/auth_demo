@@ -1,5 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import Login from "../organisms/Login";
+import Signup from "../organisms/Signup";
 import * as Yup from "yup";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
@@ -7,7 +7,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 
-import LoginTitle from "../organisms/LoginTitle";
+import SignupTitle from "../organisms/SignupTitle";
 import CancelButton from "../atoms/CancelButton";
 
 const useStyles = makeStyles(theme => ({
@@ -30,41 +30,57 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-function LoginPageDialog() {
+function SignupPage() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [initialValues, setInitialValues] = useState({
+    name: "",
+    email: "",
+    confirmEmail: "",
+    password: "",
+    confirmPassword: ""
+  });
+
   useEffect(() => {
     setOpen(true);
   });
 
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
 
-  const [initialValues, setInitialValues] = useState({
-    email: "",
-    password: ""
-  });
-
   const [validationSchema, setValidationSchema] = useState(
     Yup.object().shape({
+      name: Yup.string(
+        "Enter full name as alphabets only, no numbers and special characters should be given"
+      )
+        .min(2, "Name must contain at least 2 characters")
+        .max(30, "Name must contain no more then 20 characters")
+        .required("Name is required"),
       email: Yup.string("Enter your email")
         .email("Enter a valid email")
         .required("Email is required")
         .max(35, "Email must contain no more then 35 characters")
         .matches(
           /^[A-Za-z].*$/,
-          "Email should not start with number or special char"
+          "Email should not start with number orspecial character"
         ),
+      confirmEmail: Yup.string("Enter your email")
+        .required("Confirm your email")
+        .oneOf([Yup.ref("email")], "Email does not match")
+        .max(35, "Email must contain no more then 35 characters"),
       password: Yup.string("Enter a Password")
         .min(8, "Password must contain at least 8 characters")
         .max(20, "Password must contain no more then 20 characters")
         .required("Enter your password")
         .matches(
           /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20}/,
-          "Password must contain at least one uppercase,number,special char"
+          "Password must contain at least one uppercase,one number, one special character"
         )
-        .matches(/^[A-Z]/, "Password must start with upper case")
+        .matches(/^[A-Z]/, "Password must start with upper case"),
+      confirmPassword: Yup.string("Enter a password")
+        .required("Confirm your password")
+        .oneOf([Yup.ref("password")], "Enter correct password")
     })
   );
 
@@ -72,10 +88,9 @@ function LoginPageDialog() {
     alert(JSON.stringify(values));
   };
 
-  const LoginWithGoogleOrFacebook = () => {
-    console.log("login with Google or Facebook");
+  const SignupWithGoogleOrFacebook = () => {
+    console.log("register with Google or Facebook");
   };
-
   return (
     <Container maxWidth="sm">
       <Dialog
@@ -91,12 +106,12 @@ function LoginPageDialog() {
           <CancelButton onClick={handleClose}>✕</CancelButton>
           <Grid container className={classes.dialog}>
             <Grid item xs={5} className={classes.gridTitle}>
-              <LoginTitle />
+              <SignupTitle />
             </Grid>
             <Grid item xs={7}>
-              <Login
+              <Signup
                 handleSubmit={handleSubmit}
-                LoginWithGoogleOrFacebook={LoginWithGoogleOrFacebook}
+                SignupWithGoogleOrFacebook={SignupWithGoogleOrFacebook}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
               />
@@ -107,4 +122,4 @@ function LoginPageDialog() {
     </Container>
   );
 }
-export default LoginPageDialog;
+export default SignupPage;

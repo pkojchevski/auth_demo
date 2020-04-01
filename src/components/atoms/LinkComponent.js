@@ -4,9 +4,17 @@ import Typography from "@material-ui/core/Typography";
 
 function LinkComponent({ children }) {
   return (
-    <Typography variant="body2" mx={20}>
+    <div
+      style={{
+        fontFamily: "Roboto",
+        fontWeight: "500",
+        fontSize: "14px",
+        margin: "0",
+        whiteSpace: "nowrap"
+      }}
+    >
       {children}
-    </Typography>
+    </div>
   );
 }
 

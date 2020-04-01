@@ -2,78 +2,96 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
 
-import ButtonComponent from "../atoms/ButtonComponent";
 import FormikField from "../molecules/FormikField";
 import LinkComponent from "../atoms/LinkComponent";
 import FormComponent from "../atoms/FormComponent";
+import ButtonWhite from "../atoms/ButtonWhite";
+import ButtonOrange from "../atoms/ButtonOrange";
+import Divider from "../atoms/Divider";
 
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  positionImage: {
+    position: "absolute",
+    bottom: "30px",
+    left: "16px"
+  },
+  formContent: {
+    padding: "56px 35px 16px",
+    height: "calc(100% - 56px - 16px)",
+    position: "relative"
+  },
+  linkPosition: {
+    left: "50%",
+    transform: "translateX(-50%)",
+    position: "absolute",
+    bottom: "20px"
+  }
+}));
 const Login = ({
   handleSubmit,
   LoginWithGoogleOrFacebook,
   initialValues,
   validationSchema
 }) => {
+  const classes = useStyles();
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ dirty, touched, isValid, resetForm, errors }) => {
-        return (
-          <FormComponent>
-            <FormikField
-              name="email"
-              label="Email"
-              required
-              error={touched.email && Boolean(errors.email)}
-            />
-            <FormikField
-              name="password"
-              type="password"
-              label="Password"
-              error={touched.password && Boolean(errors.password)}
-              required
-            />
-            <br />
-            <br />
-            <ButtonComponent
-              variant="contained"
-              color="primary"
-              disabled={!dirty || !isValid}
-              type="submit"
-            >
-              Login
-            </ButtonComponent>
-            &nbsp;
-            <ButtonComponent
-              variant="contained"
-              type="reset"
-              color="primary"
-              onClick={resetForm}
-            >
-              Reset
-            </ButtonComponent>
-            <br />
-            <br />
-            <LinkComponent>
-              You do not have account please &#160;
-              <Link to="/signup">Sign up</Link>
-            </LinkComponent>
-            <br />
-            <br />
-            <ButtonComponent
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={LoginWithGoogleOrFacebook}
-            >
-              Login with Google/Facebook
-            </ButtonComponent>
-          </FormComponent>
-        );
-      }}
-    </Formik>
+    <div className={classes.formContent}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        {({ dirty, touched, isValid, resetForm, errors }) => {
+          return (
+            <FormComponent noValidate>
+              <FormikField
+                name="email"
+                label="Email"
+                required
+                error={touched.email && Boolean(errors.email)}
+              />
+              <FormikField
+                name="password"
+                type="password"
+                label="Password"
+                error={touched.password && Boolean(errors.password)}
+                required
+              />
+              <ButtonOrange
+                variant="contained"
+                type="submit"
+                fullWidth
+                style={{ marginTop: "36px" }}
+              >
+                Login
+              </ButtonOrange>
+              <Divider>OR</Divider>
+              <ButtonWhite
+                variant="contained"
+                type="submit"
+                fullWidth
+                onClick={LoginWithGoogleOrFacebook}
+              >
+                Login with Google/Facebook
+              </ButtonWhite>
+
+              <LinkComponent>
+                <div className={classes.linkPosition}>
+                  <Link
+                    to="/signup"
+                    style={{ textDecoration: "none", color: "#2874f0" }}
+                  >
+                    New User? Create an account{" "}
+                  </Link>
+                </div>
+              </LinkComponent>
+            </FormComponent>
+          );
+        }}
+      </Formik>
+    </div>
   );
 };
 
