@@ -5,6 +5,7 @@ import LoginImage from "../atoms/LoginImage";
 import TitleComponent from "../atoms/TitleComponent";
 import Subtitle from "../atoms/Subtitle";
 
+// oganism styling, positioning atoms on layout
 const useStyles = makeStyles(theme => ({
   leftTitle: {
     position: "relative",
@@ -19,6 +20,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
+// Left side of login page
 function LoginTitle() {
   const classes = useStyles();
   return (

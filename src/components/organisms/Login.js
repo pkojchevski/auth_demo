@@ -11,6 +11,7 @@ import Divider from "../atoms/Divider";
 
 import { makeStyles } from "@material-ui/core/styles";
 
+// styling organism, positioning atoms on Layout
 const useStyles = makeStyles(theme => ({
   positionImage: {
     position: "absolute",
@@ -29,6 +30,8 @@ const useStyles = makeStyles(theme => ({
     bottom: "20px"
   }
 }));
+
+// Login organism
 const Login = ({
   handleSubmit,
   LoginWithGoogleOrFacebook,
@@ -40,10 +43,13 @@ const Login = ({
     <div className={classes.formContent}>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values);
+          resetForm();
+        }}
         validationSchema={validationSchema}
       >
-        {({ dirty, touched, isValid, resetForm, errors }) => {
+        {({ touched, errors }) => {
           return (
             <FormComponent noValidate>
               <FormikField
@@ -70,7 +76,6 @@ const Login = ({
               <Divider>OR</Divider>
               <ButtonWhite
                 variant="contained"
-                type="submit"
                 fullWidth
                 onClick={LoginWithGoogleOrFacebook}
               >

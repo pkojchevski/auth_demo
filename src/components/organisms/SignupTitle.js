@@ -5,6 +5,7 @@ import LoginImage from "../atoms/LoginImage";
 import TitleComponent from "../atoms/TitleComponent";
 import Subtitle from "../atoms/Subtitle";
 
+// component styling
 const useStyles = makeStyles(theme => ({
   leftTitle: {
     position: "relative",
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+// Left side of Signup component
 function SignupTitle() {
   const classes = useStyles();
   return (

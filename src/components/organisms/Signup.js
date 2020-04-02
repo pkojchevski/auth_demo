@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import LinkComponent from "../atoms/LinkComponent";
 import ButtonWhite from "../atoms/ButtonWhite";
 import ButtonOrange from "../atoms/ButtonOrange";
-import Divider from "../atoms/Divider";
 
 import { makeStyles } from "@material-ui/core/styles";
 
+// styling organism, positioning atoms on Layout
 const useStyles = makeStyles(theme => ({
   positionImage: {
     position: "absolute",
@@ -32,21 +32,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Signup = ({
-  handleSubmit,
-  SignupWithGoogleOrFacebook,
-  initialValues,
-  validationSchema
-}) => {
+// Signup organism
+const Signup = ({ handleSubmit, initialValues, validationSchema }) => {
   const classes = useStyles();
   return (
     <div className={classes.formContent}>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values);
+          resetForm();
+        }}
         validationSchema={validationSchema}
       >
-        {({ dirty, touched, isValid, resetForm, errors }) => {
+        {({ touched, errors }) => {
           return (
             <FormComponent noValidate>
               <FormikField

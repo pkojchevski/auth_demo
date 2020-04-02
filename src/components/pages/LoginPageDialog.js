@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LoginTitle from "../organisms/LoginTitle";
 import CancelButton from "../atoms/CancelButton";
 
+// page styling, positioning atoms on layout
 const useStyles = makeStyles(theme => ({
   dialog: {
     height: "520px",
@@ -32,20 +33,27 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 function LoginPageDialog() {
   const classes = useStyles();
+
+  // set open property to open/close dialog
   const [open, setOpen] = useState(false);
+
+  // when component is rendered set property open in order automatically open Dialog when page loads
   useEffect(() => {
     setOpen(true);
   });
 
+  // set open to false to close the Dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  //set initial values for Formik form
   const [initialValues, setInitialValues] = useState({
     email: "",
     password: ""
   });
 
+  // set validation rules for Formik Fields
   const [validationSchema, setValidationSchema] = useState(
     Yup.object().shape({
       email: Yup.string("Enter your email")
@@ -68,10 +76,12 @@ function LoginPageDialog() {
     })
   );
 
+  // function which gets called when submit button is pressed
   const handleSubmit = values => {
-    alert(JSON.stringify(values));
+    console.log("Submited values:", values);
   };
 
+  // function which gets called when LoginWithGoogleOrFacebook button is pressed
   const LoginWithGoogleOrFacebook = () => {
     console.log("login with Google or Facebook");
   };

@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import SignupTitle from "../organisms/SignupTitle";
 import CancelButton from "../atoms/CancelButton";
 
+// page styling, positioning atoms on layout
 const useStyles = makeStyles(theme => ({
   dialog: {
     height: "520px",
@@ -27,11 +28,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function SignupPage() {
   const classes = useStyles();
+
+  // set open property to open/close dialog
+  const [open, setOpen] = useState(false);
+
+  // when component is rendered set property open in order automatically open Dialog when page loads
+  useEffect(() => {
+    setOpen(true);
+  });
+
+  //set initial values for Formik form
   const [initialValues, setInitialValues] = useState({
     name: "",
     email: "",
@@ -40,15 +51,12 @@ function SignupPage() {
     confirmPassword: ""
   });
 
-  useEffect(() => {
-    setOpen(true);
-  });
-
-  const [open, setOpen] = useState(false);
+  // set open to false to close the Dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // set validation rules for Formik Fields
   const [validationSchema, setValidationSchema] = useState(
     Yup.object().shape({
       name: Yup.string(
@@ -84,13 +92,11 @@ function SignupPage() {
     })
   );
 
+  // function which gets called when submit button is pressed
   const handleSubmit = values => {
     alert(JSON.stringify(values));
   };
 
-  const SignupWithGoogleOrFacebook = () => {
-    console.log("register with Google or Facebook");
-  };
   return (
     <Container maxWidth="sm">
       <Dialog
@@ -111,7 +117,6 @@ function SignupPage() {
             <Grid item xs={7}>
               <Signup
                 handleSubmit={handleSubmit}
-                SignupWithGoogleOrFacebook={SignupWithGoogleOrFacebook}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
               />
