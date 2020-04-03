@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   leftTitle: {
     position: "relative",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   positionImage: {
     position: "absolute",

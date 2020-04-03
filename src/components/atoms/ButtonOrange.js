@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
   contained: {
     "&:hover": {
       boxShadow: "0 4px 6px 0 rgba(0,0,0,.12)",
-      background: "#fb641b"
+      background: "#fb641b",
+      cursor: "pointer"
     }
   }
 }));

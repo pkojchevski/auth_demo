@@ -1,6 +1,8 @@
-import React from "react";
-import { Formik, Form } from "formik";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+
+import { Formik } from "formik";
+
+import * as Yup from "yup";
 
 import FormikField from "../molecules/FormikField";
 import LinkComponent from "../atoms/LinkComponent";
@@ -33,18 +35,47 @@ const useStyles = makeStyles(theme => ({
 
 // Login organism
 const Login = ({
-  handleSubmit,
+  handleLogin,
   LoginWithGoogleOrFacebook,
-  initialValues,
-  validationSchema
+  hideLoginUI
 }) => {
   const classes = useStyles();
+
+  //set initial values for login form
+  const [initialValues, setInitialValues] = useState({
+    email: "",
+    password: ""
+  });
+
+  // set validation rules for Formik Fields
+  const [validationSchema, setValidationSchema] = useState(
+    Yup.object().shape({
+      email: Yup.string("Enter your email")
+        .email("Enter a valid email")
+        .required("Email is required")
+        .max(35, "Email must contain no more then 35 characters")
+        .matches(
+          /^[A-Za-z].*$/,
+          "Email should not start with number or special char"
+        ),
+      password: Yup.string("Enter a Password")
+        .min(8, "Password must contain at least 8 characters")
+        .max(20, "Password must contain no more then 20 characters")
+        .required("Enter your password")
+        .matches(
+          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20}/,
+          "Password must contain at least one uppercase,number,special char"
+        )
+        .matches(/^[A-Z]/, "Password must start with upper case")
+    })
+  );
+
   return (
     <div className={classes.formContent}>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
-          handleSubmit(values);
+          handleLogin(values);
           resetForm();
         }}
         validationSchema={validationSchema}
@@ -57,6 +88,7 @@ const Login = ({
                 label="Email"
                 required
                 error={touched.email && Boolean(errors.email)}
+                autoFocus
               />
               <FormikField
                 name="password"
@@ -83,13 +115,10 @@ const Login = ({
               </ButtonWhite>
 
               <LinkComponent>
-                <div className={classes.linkPosition}>
-                  <Link
-                    to="/signup"
-                    style={{ textDecoration: "none", color: "#2874f0" }}
-                  >
-                    New User? Create an account{" "}
-                  </Link>
+                <div className={classes.linkPosition} onClick={hideLoginUI}
+                  style={{ textDecoration: "none", color: "#2874f0", cursor: 'pointer' }}
+                >
+                  New User? Create an account{" "}
                 </div>
               </LinkComponent>
             </FormComponent>

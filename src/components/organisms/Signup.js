@@ -1,14 +1,13 @@
-import React from "react";
-import { Formik, Form } from "formik";
+import React, { useState } from "react";
+
+import { Formik } from "formik";
+
 import * as Yup from "yup";
+
 import FormikField from "../molecules/FormikField";
-
 import FormComponent from "../atoms/FormComponent";
-import { Link } from "react-router-dom";
-
-import LinkComponent from "../atoms/LinkComponent";
-import ButtonWhite from "../atoms/ButtonWhite";
 import ButtonOrange from "../atoms/ButtonOrange";
+import ButtonWhite from "../atoms/ButtonWhite";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -20,27 +19,68 @@ const useStyles = makeStyles(theme => ({
     left: "16px"
   },
   formContent: {
-    padding: "0 16px",
-    height: "100%",
+    padding: "16px 35px 16px",
+    height: "calc(100% - 26px - 16px)",
     position: "relative"
   },
-  linkPosition: {
-    left: "50%",
-    transform: "translateX(-50%)",
-    position: "absolute",
-    bottom: "20px"
-  }
 }));
 
 // Signup organism
-const Signup = ({ handleSubmit, initialValues, validationSchema }) => {
+const Signup = ({ handleSignup, showLoginUI }) => {
   const classes = useStyles();
+
+  //set initial values for signup form
+  const [initialValues, setInitialValues] = useState({
+    name: "",
+    email: "",
+    confirmEmail: "",
+    password: "",
+    confirmPassword: ""
+  });
+
+  // set validation rules for Signup Fields
+  const [validationSchema, setValidationSchema] = useState(
+    Yup.object().shape({
+      name: Yup.string(
+        "Enter full name as alphabets only, no numbers and special characters should be given"
+      )
+        .min(2, "Name must contain at least 2 characters")
+        .max(30, "Name must contain no more then 20 characters")
+        .required("Name is required"),
+      email: Yup.string("Enter your email")
+        .email("Enter a valid email")
+        .required("Email is required")
+        .max(35, "Email must contain no more then 35 characters")
+        .matches(
+          /^[A-Za-z].*$/,
+          "Email should not start with number orspecial character"
+        ),
+      confirmEmail: Yup.string("Enter your email")
+        .required("Confirm your email")
+        .oneOf([Yup.ref("email")], "Email does not match")
+        .max(35, "Email must contain no more then 35 characters"),
+      password: Yup.string("Enter a Password")
+        .min(8, "Password must contain at least 8 characters")
+        .max(20, "Password must contain no more then 20 characters")
+        .required("Enter your password")
+        .matches(
+          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20}/,
+          "Password must contain at least one uppercase,one number, one special character"
+        )
+        .matches(/^[A-Z]/, "Password must start with upper case"),
+      confirmPassword: Yup.string("Enter a password")
+        .required("Confirm your password")
+        .oneOf([Yup.ref("password")], "Enter correct password")
+    })
+  );
+
+
   return (
     <div className={classes.formContent}>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
-          handleSubmit(values);
+          handleSignup(values);
           resetForm();
         }}
         validationSchema={validationSchema}
@@ -87,20 +127,17 @@ const Signup = ({ handleSubmit, initialValues, validationSchema }) => {
                 variant="contained"
                 type="submit"
                 fullWidth
-                style={{ marginTop: "16px" }}
+                style={{ margin: '36px 0 16px 0' }}
               >
                 Signup
               </ButtonOrange>
-              <LinkComponent>
-                <div className={classes.linkPosition}>
-                  <Link
-                    to="/login"
-                    style={{ textDecoration: "none", color: "#2874f0" }}
-                  >
-                    Existing User? Signin
-                  </Link>
-                </div>
-              </LinkComponent>
+              <ButtonWhite
+                onClick={showLoginUI}
+                fullWidth
+                style={{ textTransform: 'none' }}>
+
+                Existing User? Signin</ButtonWhite>
+
             </FormComponent>
           );
         }}
