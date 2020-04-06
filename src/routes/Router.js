@@ -2,15 +2,16 @@ import React from "react";
 
 import { Switch, Route } from "react-router-dom";
 
-import AuthPage from "../components/pages/AuthPage";
+import LoginPage from "../components/pages/LoginPage";
+import SignupPage from "../components/pages/SignupPage";
 
 
-
-function Router() {
+function Router({ handleClose }) {
   return (
     <Switch>
-      <Route exact path="/" component={AuthPage}></Route>
-      <Route exact path="/login" component={AuthPage}></Route>
+      <Route exact path="/" render={() => <LoginPage handleClose={handleClose} />} />
+      <Route exact path="/login" render={() => <LoginPage handleClose={handleClose} />} />
+      <Route exact path="/signup" render={() => <SignupPage handleClose={handleClose} />} />
     </Switch>
   );
 }

@@ -4,6 +4,8 @@ import { Formik } from "formik";
 
 import * as Yup from "yup";
 
+import { Link } from 'react-router-dom'
+
 import FormikField from "../molecules/FormikField";
 import LinkComponent from "../atoms/LinkComponent";
 import FormComponent from "../atoms/FormComponent";
@@ -37,7 +39,6 @@ const useStyles = makeStyles(theme => ({
 const Login = ({
   handleLogin,
   LoginWithGoogleOrFacebook,
-  hideLoginUI
 }) => {
   const classes = useStyles();
 
@@ -115,11 +116,13 @@ const Login = ({
               </ButtonWhite>
 
               <LinkComponent>
-                <div className={classes.linkPosition} onClick={hideLoginUI}
-                  style={{ textDecoration: "none", color: "#2874f0", cursor: 'pointer' }}
-                >
-                  New User? Create an account{" "}
-                </div>
+                <Link to='signup'>
+                  <div className={classes.linkPosition}
+                    style={{ textDecoration: "none", color: "#2874f0", cursor: 'pointer' }}
+                  >
+                    New User? Create an account{" "}
+                  </div>
+                </Link>
               </LinkComponent>
             </FormComponent>
           );

@@ -4,6 +4,8 @@ import { Formik } from "formik";
 
 import * as Yup from "yup";
 
+import { Link } from 'react-router-dom'
+
 import FormikField from "../molecules/FormikField";
 import FormComponent from "../atoms/FormComponent";
 import ButtonOrange from "../atoms/ButtonOrange";
@@ -23,6 +25,9 @@ const useStyles = makeStyles(theme => ({
     height: "calc(100% - 26px - 16px)",
     position: "relative"
   },
+  link: {
+    textDecoration: 'none'
+  }
 }));
 
 // Signup organism
@@ -131,12 +136,14 @@ const Signup = ({ handleSignup, showLoginUI }) => {
               >
                 Signup
               </ButtonOrange>
-              <ButtonWhite
-                onClick={showLoginUI}
-                fullWidth
-                style={{ textTransform: 'none' }}>
+              <Link to='/login' className={classes.link} >
+                <ButtonWhite
+                  fullWidth
+                  style={{ textTransform: 'none' }}>
 
-                Existing User? Signin</ButtonWhite>
+                  Existing User? Signin
+                </ButtonWhite>
+              </Link>
 
             </FormComponent>
           );

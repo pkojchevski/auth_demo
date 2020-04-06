@@ -1,9 +1,9 @@
 import React from "react";
 
-import Router from "./routes/Router";
+import AuthPage from "./components/pages/AuthPage";
 
 function App() {
-  return (<Router />)
+  return (<AuthPage />)
 }
 
 export default App;
